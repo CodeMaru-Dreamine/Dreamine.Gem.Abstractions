@@ -45,7 +45,7 @@ public interface IGemEventReportService
     bool DeleteReport(ulong reportId);
     /// <summary>\if KO 이벤트 활성화 상태를 변경합니다. \endif \if EN Changes event enablement. \endif</summary>
     bool SetEnabled(ulong eventId, bool enabled);
-    /// <summary>\if KO 이벤트 값을 원자적으로 수집합니다. \endif \if EN Collects one event snapshot atomically. \endif</summary>
+    /// <summary>\if KO 안정적인 보고서 연결 스냅샷을 기준으로 이벤트 값을 수집합니다. 외부 판독기 전체가 물리적으로 원자적이라는 뜻은 아닙니다. \endif \if EN Collects event values against a stable report-link snapshot; external readers are not implied to be physically atomic as a group. \endif</summary>
     ValueTask<GemEventSnapshot?> CollectAsync(ulong eventId, CancellationToken cancellationToken = default);
 }
 
