@@ -39,10 +39,9 @@ GEM 기능 전체를 지원한다는 뜻은 아닙니다.
 
 ## Versioning 주의
 
-현재 Project Metadata는 계속 `1.0.0`이지만 작업 Source에는 공개 API가 추가돼
-있습니다. Package Candidate는 고유 Version을 사용하고 짝이 맞는 `Dreamine.Gem`
-Candidate와 함께 검증해야 합니다. 이전 `1.0.0` Identity를 재사용하면 Cache에 남은
-Binary가 선택될 수 있습니다.
+`1.0.0`은 최초 공개 package version입니다. 짝이 맞는 `Dreamine.Gem` `1.0.0`과
+함께 사용하고, 게시된 두 package를 검증하기 전에 package cache에서 과거 local-feed
+산출물을 제거하십시오.
 
 ## 라이선스
 

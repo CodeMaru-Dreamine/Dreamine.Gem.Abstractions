@@ -42,10 +42,9 @@ See [the public API review](docs/API_REVIEW.md) and the generated
 
 ## Versioning note
 
-The current project metadata still identifies this package as `1.0.0` while
-the working source contains additive public API. A package candidate must use a
-unique version and be validated together with its matching `Dreamine.Gem`
-candidate; reusing an earlier `1.0.0` identity can hide a stale cached binary.
+`1.0.0` is the initial public package version. Consume it together with the
+matching `Dreamine.Gem` `1.0.0` package, and clear older local-feed artifacts
+from the package cache before validating the published pair.
 
 ## License
 

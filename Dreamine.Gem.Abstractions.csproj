@@ -9,7 +9,7 @@
     <Version>1.0.0</Version>
     <Authors>Dreamine Core Team</Authors>
     <Company>Dreamine</Company>
-    <Description>Shared contracts for future Dreamine GEM host and equipment capabilities.</Description>
+    <Description>Shared contracts for typed Dreamine GEM host and equipment capabilities.</Description>
     <PackageTags>dreamine;gem;abstractions;secs;contracts</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/CodeMaru-Dreamine/Dreamine.Gem.Abstractions</RepositoryUrl>
