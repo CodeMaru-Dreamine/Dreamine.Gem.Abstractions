@@ -175,11 +175,26 @@ public sealed class GemProcessProgram
 public sealed class GemEventSnapshot
 {
     private readonly ReadOnlyDictionary<ulong, SecsItem> _values;
+    private readonly ReadOnlyCollection<GemReportValueSnapshot> _reports;
     /// <summary>\if KO 이벤트 스냅샷을 만듭니다. \endif \if EN Creates an event snapshot. \endif</summary>
     public GemEventSnapshot(ulong eventId, DateTimeOffset occurredAt, IDictionary<ulong, SecsItem> values)
     {
         if (eventId == 0) throw new ArgumentOutOfRangeException(nameof(eventId)); ArgumentNullException.ThrowIfNull(values);
         EventId = eventId; OccurredAt = occurredAt; _values = new ReadOnlyDictionary<ulong, SecsItem>(new Dictionary<ulong, SecsItem>(values));
+        _reports = Array.AsReadOnly(Array.Empty<GemReportValueSnapshot>());
+    }
+    /// <summary>\if KO 보고서별 순서와 서로 다른 보고서의 중복 VID를 보존하는 이벤트 스냅샷을 만듭니다. \endif \if EN Creates an event snapshot that preserves per-report order and repeated VIDs across reports. \endif</summary>
+    public GemEventSnapshot(ulong eventId, DateTimeOffset occurredAt, IEnumerable<GemReportValueSnapshot> reports)
+    {
+        if (eventId == 0) throw new ArgumentOutOfRangeException(nameof(eventId)); ArgumentNullException.ThrowIfNull(reports);
+        var reportSnapshot = reports.ToArray();
+        if (reportSnapshot.Any(static report => report is null)) throw new ArgumentException("Reports cannot contain null.", nameof(reports));
+        EventId = eventId; OccurredAt = occurredAt; _reports = Array.AsReadOnly(reportSnapshot);
+        var flattened = new Dictionary<ulong, SecsItem>();
+        foreach (var report in reportSnapshot)
+            foreach (var value in report.Values)
+                flattened.TryAdd(value.VariableId, value.Value);
+        _values = new ReadOnlyDictionary<ulong, SecsItem>(flattened);
     }
     /// <summary>\if KO 이벤트 식별자입니다. \endif \if EN Gets the event identifier. \endif</summary>
     public ulong EventId { get; }
@@ -187,4 +202,6 @@ public sealed class GemEventSnapshot
     public DateTimeOffset OccurredAt { get; }
     /// <summary>\if KO 수집된 변수 값입니다. \endif \if EN Gets collected variable values. \endif</summary>
     public IReadOnlyDictionary<ulong, SecsItem> Values => _values;
+    /// <summary>\if KO RPTID와 VID 순서를 보존하는 구조화된 보고서 스냅샷입니다. 기존 평탄화 Values도 유지됩니다. \endif \if EN Gets structured report snapshots preserving RPTID and VID order; the legacy flattened Values view remains available. \endif</summary>
+    public IReadOnlyList<GemReportValueSnapshot> Reports => _reports;
 }

@@ -2,15 +2,50 @@
 
 Provider-neutral GEM contracts and immutable domain models for Dreamine.
 
-[➡️ 한국어 문서 보기](https://github.com/CodeMaru-Dreamine/Dreamine.Gem.Abstractions/blob/main/README_KO.md)
+[➡️ 한국어 문서 보기](README_KO.md)
 
-The package defines a SECS message transport boundary, typed variable,
-constant, event/report, alarm, remote-command, process-program, clock, and
-spool service contracts, state enums, and immutable definitions. It depends on
-`Dreamine.Secs.Abstractions`, not on a concrete HSMS implementation.
+The package defines the SECS message-transport boundary, state and service
+contracts, and immutable values used by `Dreamine.Gem`. It depends on
+`Dreamine.Secs.Abstractions`; it does not depend on a concrete HSMS provider or
+on the GEM implementation package.
 
-The contracts do not claim that an implementation supports every GEM message
-scenario or conforms to a specific SEMI revision.
+## Profile-ready contracts
+
+The additive profile surface provides:
+
+- typed variable, equipment-constant, alarm, report, collection-event, remote-
+  command, process-program, clock, and spool models;
+- independent U1/U2/U4/U8 policies for CEID, RPTID, VID, SVID, DVID, ECID,
+  ALID, and DATAID;
+- immutable profile definitions, snapshots, ordered report values, atomic
+  equipment-constant result models, and event-configuration result models;
+- typed remote-command parameter definitions and context-independent handlers.
+
+These are contracts and domain values. They do not by themselves enable a
+wire dialogue or claim support for every GEM capability.
+
+## Evidence boundary
+
+| Scope | Status | Meaning |
+|---|---|---|
+| Public contract surface | `IMPLEMENTED_UNVERIFIED` | The additive source surface is available; release-package and external interoperability evidence remain separate. |
+| Local unit evidence for immutable models and validation | `PASS` | Local automated tests cover the profile-model rules; this is not field evidence. |
+| External simulator or production equipment | `NOT_RUN` | No external result is inferred from contract tests. |
+| E37.1 conformance | `BLOCKED_STANDARD` | The required licensed revision is unavailable; this package makes no E37.1 claim. |
+
+The target sources for the implementation package are E30-0611 and E5-0813.
+They are not represented as current-revision conformance, certification, or
+interoperability evidence.
+
+See [the public API review](docs/API_REVIEW.md) and the generated
+[public API inventory](docs/PUBLIC_API.md).
+
+## Versioning note
+
+The current project metadata still identifies this package as `1.0.0` while
+the working source contains additive public API. A package candidate must use a
+unique version and be validated together with its matching `Dreamine.Gem`
+candidate; reusing an earlier `1.0.0` identity can hide a stale cached binary.
 
 ## License
 

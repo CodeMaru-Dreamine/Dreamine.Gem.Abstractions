@@ -4,7 +4,7 @@ Assembly: `Dreamine.Gem.Abstractions`
 
 This inventory is generated from the compiled Release assembly. It is an audit artifact, not an additional compatibility promise.
 
-Exported types: **29**
+Exported types: **50**
 
 ## Types
 
@@ -13,7 +13,7 @@ Exported types: **29**
 - `Dreamine.Gem.Abstractions.States.GemAlarmChangeStatus ChangeAlarm(System.UInt64 id, System.Boolean isSet)`
 - `System.Boolean SetAlarm(System.UInt64 id, System.Boolean isSet)`
 - `System.Boolean SetEnabled(System.UInt64 id, System.Boolean enabled)`
-- `System.Boolean TryGetState(System.UInt64 id, System.Boolean& isSet)`
+- `System.Boolean TryGetState(System.UInt64 id, out System.Boolean isSet)`
 - `System.Collections.Generic.IReadOnlyList<System.UInt64> GetSetAlarmIds()`
 - `System.Void Register(Dreamine.Gem.Abstractions.Model.GemAlarmDefinition definition)`
 
@@ -26,7 +26,7 @@ Exported types: **29**
 ### `public interface Dreamine.Gem.Abstractions.Interfaces.IGemEquipmentConstantService`
 
 - `Dreamine.Gem.Abstractions.States.GemConstantSetStatus SetValue(System.UInt64 id, Dreamine.Secs.Abstractions.Model.SecsItem value, Dreamine.Gem.Abstractions.States.GemControlState controlState)`
-- `System.Boolean TryGetValue(System.UInt64 id, Dreamine.Secs.Abstractions.Model.SecsItem& value)`
+- `System.Boolean TryGetValue(System.UInt64 id, out Dreamine.Secs.Abstractions.Model.SecsItem value)`
 - `System.Boolean TrySetValue(System.UInt64 id, Dreamine.Secs.Abstractions.Model.SecsItem value)`
 - `System.Void Register(Dreamine.Gem.Abstractions.Model.GemEquipmentConstantDefinition definition, System.Func<Dreamine.Secs.Abstractions.Model.SecsItem, System.Boolean> validator, System.Func<Dreamine.Gem.Abstractions.States.GemControlState, System.Boolean> statePolicy)`
 
@@ -52,7 +52,7 @@ Exported types: **29**
 ### `public interface Dreamine.Gem.Abstractions.Interfaces.IGemProcessProgramService`
 
 - `System.Boolean Delete(System.String id)`
-- `System.Boolean TryGet(System.String id, Dreamine.Gem.Abstractions.Model.GemProcessProgram& program)`
+- `System.Boolean TryGet(System.String id, out Dreamine.Gem.Abstractions.Model.GemProcessProgram program)`
 - `System.Collections.Generic.IReadOnlyList<System.String> GetIds()`
 - `System.Void Put(Dreamine.Gem.Abstractions.Model.GemProcessProgram program)`
 
@@ -76,7 +76,7 @@ Exported types: **29**
 
 ### `public interface Dreamine.Gem.Abstractions.Interfaces.IGemVariableCatalog`
 
-- `System.Boolean TryGetDefinition(System.UInt64 id, Dreamine.Gem.Abstractions.Model.GemVariableDefinition& definition)`
+- `System.Boolean TryGetDefinition(System.UInt64 id, out Dreamine.Gem.Abstractions.Model.GemVariableDefinition definition)`
 - `System.Collections.Generic.IReadOnlyList<Dreamine.Gem.Abstractions.Model.GemVariableDefinition> GetDefinitions(System.Nullable<Dreamine.Gem.Abstractions.States.GemVariableKind> kind)`
 - `System.Threading.Tasks.ValueTask<Dreamine.Secs.Abstractions.Model.SecsItem> ReadAsync(System.UInt64 id, System.Threading.CancellationToken cancellationToken)`
 - `System.Void Register(Dreamine.Gem.Abstractions.Model.GemVariableDefinition definition, System.Func<System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<Dreamine.Secs.Abstractions.Model.SecsItem>> reader)`
@@ -89,6 +89,13 @@ Exported types: **29**
 - `System.String Text { get; }`
 - `System.UInt64 Id { get; }`
 
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemAlarmSnapshot`
+
+- `Dreamine.Gem.Abstractions.Model.GemAlarmDefinition Definition { get; }`
+- `GemAlarmSnapshot(Dreamine.Gem.Abstractions.Model.GemAlarmDefinition definition, System.Boolean enabled, System.Boolean isSet)`
+- `System.Boolean Enabled { get; }`
+- `System.Boolean IsSet { get; }`
+
 ### `public sealed class Dreamine.Gem.Abstractions.Model.GemCollectionEventDefinition`
 
 - `GemCollectionEventDefinition(System.UInt64 id, System.String name, System.Collections.Generic.IEnumerable<System.UInt64> reportIds, System.Boolean enabled)`
@@ -97,11 +104,32 @@ Exported types: **29**
 - `System.String Name { get; }`
 - `System.UInt64 Id { get; }`
 
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemCollectionEventSnapshot`
+
+- `Dreamine.Gem.Abstractions.Model.GemCollectionEventDefinition Definition { get; }`
+- `GemCollectionEventSnapshot(Dreamine.Gem.Abstractions.Model.GemCollectionEventDefinition definition, System.Collections.Generic.IEnumerable<System.UInt64> reportIds, System.Boolean enabled)`
+- `System.Boolean Enabled { get; }`
+- `System.Collections.Generic.IReadOnlyList<System.UInt64> ReportIds { get; }`
+
 ### `public sealed class Dreamine.Gem.Abstractions.Model.GemCommandResult`
 
 - `Dreamine.Gem.Abstractions.States.GemCommandStatus Status { get; }`
 - `GemCommandResult(Dreamine.Gem.Abstractions.States.GemCommandStatus status, System.String detail)`
 - `System.String Detail { get; }`
+
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemConstantBatchResult`
+
+- `Dreamine.Gem.Abstractions.Model.GemConstantBatchStatus Status { get; }`
+- `GemConstantBatchResult(Dreamine.Gem.Abstractions.Model.GemConstantBatchStatus status, System.Nullable<System.UInt64> failedId)`
+- `System.Nullable<System.UInt64> FailedId { get; }`
+
+### `public enum Dreamine.Gem.Abstractions.Model.GemConstantBatchStatus`
+
+- `const Dreamine.Gem.Abstractions.Model.GemConstantBatchStatus Duplicate = 2`
+- `const Dreamine.Gem.Abstractions.Model.GemConstantBatchStatus PolicyDenied = 4`
+- `const Dreamine.Gem.Abstractions.Model.GemConstantBatchStatus Unknown = 1`
+- `const Dreamine.Gem.Abstractions.Model.GemConstantBatchStatus Updated = 0`
+- `const Dreamine.Gem.Abstractions.Model.GemConstantBatchStatus ValidationFailed = 3`
 
 ### `public sealed class Dreamine.Gem.Abstractions.Model.GemEquipmentConstantDefinition`
 
@@ -114,18 +142,94 @@ Exported types: **29**
 - `System.String Units { get; }`
 - `System.UInt64 Id { get; }`
 
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemEquipmentConstantProfileDefinition`
+
+- `Dreamine.Gem.Abstractions.Model.GemEquipmentConstantDefinition Definition { get; }`
+- `Dreamine.Secs.Abstractions.Model.SecsItemFormat Format { get; }`
+- `GemEquipmentConstantProfileDefinition(Dreamine.Gem.Abstractions.Model.GemEquipmentConstantDefinition definition, Dreamine.Secs.Abstractions.Model.SecsItemFormat format, System.Func<Dreamine.Secs.Abstractions.Model.SecsItem, System.Boolean> validator, System.Collections.Generic.IEnumerable<Dreamine.Gem.Abstractions.States.GemControlState> allowedControlStates)`
+- `System.Collections.Generic.IReadOnlyList<Dreamine.Gem.Abstractions.States.GemControlState> AllowedControlStates { get; }`
+- `System.Func<Dreamine.Secs.Abstractions.Model.SecsItem, System.Boolean> Validator { get; }`
+
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemEquipmentConstantSnapshot`
+
+- `Dreamine.Gem.Abstractions.Model.GemEquipmentConstantDefinition Definition { get; }`
+- `Dreamine.Secs.Abstractions.Model.SecsItem Value { get; }`
+- `GemEquipmentConstantSnapshot(Dreamine.Gem.Abstractions.Model.GemEquipmentConstantDefinition definition, Dreamine.Secs.Abstractions.Model.SecsItem value)`
+
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemEquipmentConstantUpdate`
+
+- `Dreamine.Secs.Abstractions.Model.SecsItem Value { get; }`
+- `GemEquipmentConstantUpdate(System.UInt64 id, Dreamine.Secs.Abstractions.Model.SecsItem value)`
+- `System.UInt64 Id { get; }`
+
 ### `public sealed class Dreamine.Gem.Abstractions.Model.GemEquipmentIdentity`
 
 - `GemEquipmentIdentity(System.String modelNumber, System.String softwareRevision)`
 - `System.String ModelNumber { get; }`
 - `System.String SoftwareRevision { get; }`
 
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemEventConfigurationResult`
+
+- `Dreamine.Gem.Abstractions.Model.GemEventConfigurationStatus Status { get; }`
+- `GemEventConfigurationResult(Dreamine.Gem.Abstractions.Model.GemEventConfigurationStatus status, System.Nullable<System.UInt64> failedId)`
+- `System.Nullable<System.UInt64> FailedId { get; }`
+
+### `public enum Dreamine.Gem.Abstractions.Model.GemEventConfigurationStatus`
+
+- `const Dreamine.Gem.Abstractions.Model.GemEventConfigurationStatus Applied = 0`
+- `const Dreamine.Gem.Abstractions.Model.GemEventConfigurationStatus Duplicate = 1`
+- `const Dreamine.Gem.Abstractions.Model.GemEventConfigurationStatus ExistingLinks = 5`
+- `const Dreamine.Gem.Abstractions.Model.GemEventConfigurationStatus ReportInUse = 6`
+- `const Dreamine.Gem.Abstractions.Model.GemEventConfigurationStatus UnknownEvent = 4`
+- `const Dreamine.Gem.Abstractions.Model.GemEventConfigurationStatus UnknownReport = 3`
+- `const Dreamine.Gem.Abstractions.Model.GemEventConfigurationStatus UnknownVariable = 2`
+
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemEventEnableUpdate`
+
+- `GemEventEnableUpdate(System.UInt64 eventId, System.Boolean enabled)`
+- `System.Boolean Enabled { get; }`
+- `System.UInt64 EventId { get; }`
+
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemEventReportLinkUpdate`
+
+- `GemEventReportLinkUpdate(System.UInt64 eventId, System.Collections.Generic.IEnumerable<System.UInt64> reportIds)`
+- `System.Collections.Generic.IReadOnlyList<System.UInt64> ReportIds { get; }`
+- `System.UInt64 EventId { get; }`
+
 ### `public sealed class Dreamine.Gem.Abstractions.Model.GemEventSnapshot`
 
 - `GemEventSnapshot(System.UInt64 eventId, System.DateTimeOffset occurredAt, System.Collections.Generic.IDictionary<System.UInt64, Dreamine.Secs.Abstractions.Model.SecsItem> values)`
+- `GemEventSnapshot(System.UInt64 eventId, System.DateTimeOffset occurredAt, System.Collections.Generic.IEnumerable<Dreamine.Gem.Abstractions.Model.GemReportValueSnapshot> reports)`
 - `System.Collections.Generic.IReadOnlyDictionary<System.UInt64, Dreamine.Secs.Abstractions.Model.SecsItem> Values { get; }`
+- `System.Collections.Generic.IReadOnlyList<Dreamine.Gem.Abstractions.Model.GemReportValueSnapshot> Reports { get; }`
 - `System.DateTimeOffset OccurredAt { get; }`
 - `System.UInt64 EventId { get; }`
+
+### `public enum Dreamine.Gem.Abstractions.Model.GemIdentifierFamily`
+
+- `const Dreamine.Gem.Abstractions.Model.GemIdentifierFamily Alarm = 6`
+- `const Dreamine.Gem.Abstractions.Model.GemIdentifierFamily CollectionEvent = 0`
+- `const Dreamine.Gem.Abstractions.Model.GemIdentifierFamily DataIdentifier = 7`
+- `const Dreamine.Gem.Abstractions.Model.GemIdentifierFamily DataVariable = 4`
+- `const Dreamine.Gem.Abstractions.Model.GemIdentifierFamily EquipmentConstant = 5`
+- `const Dreamine.Gem.Abstractions.Model.GemIdentifierFamily Report = 1`
+- `const Dreamine.Gem.Abstractions.Model.GemIdentifierFamily StatusVariable = 3`
+- `const Dreamine.Gem.Abstractions.Model.GemIdentifierFamily Variable = 2`
+
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemIdentifierFormatOverride`
+
+- `Dreamine.Gem.Abstractions.Model.GemIdentifierFamily Family { get; }`
+- `Dreamine.Secs.Abstractions.Model.SecsItemFormat Format { get; }`
+- `GemIdentifierFormatOverride(Dreamine.Gem.Abstractions.Model.GemIdentifierFamily family, Dreamine.Secs.Abstractions.Model.SecsItemFormat format)`
+
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemIdentifierFormatPolicy`
+
+- `Dreamine.Secs.Abstractions.Model.SecsItem CreateItem(Dreamine.Gem.Abstractions.Model.GemIdentifierFamily family, System.UInt64 value)`
+- `Dreamine.Secs.Abstractions.Model.SecsItemFormat GetFormat(Dreamine.Gem.Abstractions.Model.GemIdentifierFamily family)`
+- `GemIdentifierFormatPolicy(System.Collections.Generic.IEnumerable<Dreamine.Gem.Abstractions.Model.GemIdentifierFormatOverride> overrides)`
+- `System.Boolean IsValid(Dreamine.Gem.Abstractions.Model.GemIdentifierFamily family, System.UInt64 value)`
+- `System.Collections.Generic.IReadOnlyDictionary<Dreamine.Gem.Abstractions.Model.GemIdentifierFamily, Dreamine.Secs.Abstractions.Model.SecsItemFormat> Formats { get; }`
+- `System.UInt64 GetMaximum(Dreamine.Gem.Abstractions.Model.GemIdentifierFamily family)`
 
 ### `public sealed class Dreamine.Gem.Abstractions.Model.GemProcessProgram`
 
@@ -133,17 +237,53 @@ Exported types: **29**
 - `System.ReadOnlyMemory<System.Byte> Body { get; }`
 - `System.String Id { get; }`
 
+### `public enum Dreamine.Gem.Abstractions.Model.GemProfileCapability`
+
+- `const Dreamine.Gem.Abstractions.Model.GemProfileCapability Alarms = 3`
+- `const Dreamine.Gem.Abstractions.Model.GemProfileCapability Clock = 6`
+- `const Dreamine.Gem.Abstractions.Model.GemProfileCapability CollectionEventsAndReports = 4`
+- `const Dreamine.Gem.Abstractions.Model.GemProfileCapability CommunicationAndControl = 0`
+- `const Dreamine.Gem.Abstractions.Model.GemProfileCapability EquipmentConstants = 2`
+- `const Dreamine.Gem.Abstractions.Model.GemProfileCapability RemoteCommands = 5`
+- `const Dreamine.Gem.Abstractions.Model.GemProfileCapability StatusAndDataVariables = 1`
+
 ### `public sealed class Dreamine.Gem.Abstractions.Model.GemRemoteCommandDefinition`
 
 - `GemRemoteCommandDefinition(System.String name, System.Collections.Generic.IEnumerable<System.String> parameters)`
 - `System.Collections.Generic.IReadOnlyList<System.String> Parameters { get; }`
 - `System.String Name { get; }`
 
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemRemoteCommandParameterDefinition`
+
+- `Dreamine.Secs.Abstractions.Model.SecsItemFormat Format { get; }`
+- `GemRemoteCommandParameterDefinition(System.String name, Dreamine.Secs.Abstractions.Model.SecsItemFormat format, System.Boolean required, System.Func<Dreamine.Secs.Abstractions.Model.SecsItem, System.Boolean> validator)`
+- `System.Boolean Required { get; }`
+- `System.Func<Dreamine.Secs.Abstractions.Model.SecsItem, System.Boolean> Validator { get; }`
+- `System.String Name { get; }`
+
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemRemoteCommandProfileDefinition`
+
+- `GemRemoteCommandProfileDefinition(System.String name, System.Collections.Generic.IEnumerable<Dreamine.Gem.Abstractions.Model.GemRemoteCommandParameterDefinition> parameters)`
+- `System.Collections.Generic.IReadOnlyList<Dreamine.Gem.Abstractions.Model.GemRemoteCommandParameterDefinition> Parameters { get; }`
+- `System.String Name { get; }`
+
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemRemoteCommandProfileEntry`
+
+- `Dreamine.Gem.Abstractions.Model.GemRemoteCommandProfileDefinition Definition { get; }`
+- `GemRemoteCommandProfileEntry(Dreamine.Gem.Abstractions.Model.GemRemoteCommandProfileDefinition definition, System.Func<System.Collections.Generic.IReadOnlyDictionary<System.String, Dreamine.Secs.Abstractions.Model.SecsItem>, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<Dreamine.Gem.Abstractions.Model.GemCommandResult>> handler)`
+- `System.Func<System.Collections.Generic.IReadOnlyDictionary<System.String, Dreamine.Secs.Abstractions.Model.SecsItem>, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<Dreamine.Gem.Abstractions.Model.GemCommandResult>> Handler { get; }`
+
 ### `public sealed class Dreamine.Gem.Abstractions.Model.GemReportDefinition`
 
 - `GemReportDefinition(System.UInt64 id, System.Collections.Generic.IEnumerable<System.UInt64> variableIds)`
 - `System.Collections.Generic.IReadOnlyList<System.UInt64> VariableIds { get; }`
 - `System.UInt64 Id { get; }`
+
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemReportValueSnapshot`
+
+- `GemReportValueSnapshot(System.UInt64 reportId, System.Collections.Generic.IEnumerable<Dreamine.Gem.Abstractions.Model.GemVariableValueSnapshot> values)`
+- `System.Collections.Generic.IReadOnlyList<Dreamine.Gem.Abstractions.Model.GemVariableValueSnapshot> Values { get; }`
+- `System.UInt64 ReportId { get; }`
 
 ### `public sealed class Dreamine.Gem.Abstractions.Model.GemVariableDefinition`
 
@@ -153,6 +293,19 @@ Exported types: **29**
 - `System.String Name { get; }`
 - `System.String Units { get; }`
 - `System.UInt64 Id { get; }`
+
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemVariableProfileDefinition`
+
+- `Dreamine.Gem.Abstractions.Model.GemVariableDefinition Definition { get; }`
+- `Dreamine.Secs.Abstractions.Model.SecsItemFormat Format { get; }`
+- `GemVariableProfileDefinition(Dreamine.Gem.Abstractions.Model.GemVariableDefinition definition, Dreamine.Secs.Abstractions.Model.SecsItemFormat format, System.Func<System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<Dreamine.Secs.Abstractions.Model.SecsItem>> reader)`
+- `System.Func<System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<Dreamine.Secs.Abstractions.Model.SecsItem>> Reader { get; }`
+
+### `public sealed class Dreamine.Gem.Abstractions.Model.GemVariableValueSnapshot`
+
+- `Dreamine.Secs.Abstractions.Model.SecsItem Value { get; }`
+- `GemVariableValueSnapshot(System.UInt64 variableId, Dreamine.Secs.Abstractions.Model.SecsItem value)`
+- `System.UInt64 VariableId { get; }`
 
 ### `public enum Dreamine.Gem.Abstractions.States.GemAlarmChangeStatus`
 
