@@ -6,10 +6,11 @@
     <AssemblyName>Dreamine.Gem.Abstractions</AssemblyName>
     <RootNamespace>Dreamine.Gem.Abstractions</RootNamespace>
     <PackageId>Dreamine.Gem.Abstractions</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>Dreamine Core Team</Authors>
     <Company>Dreamine</Company>
     <Description>Shared contracts for typed Dreamine GEM host and equipment capabilities.</Description>
+    <PackageReleaseNotes>1.0.1: improves NuGet onboarding and README navigation, adds standalone repository builds, CI and SonarQube Cloud analysis, and portable symbols with Source Link metadata.</PackageReleaseNotes>
     <PackageTags>dreamine;gem;abstractions;secs;contracts</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/CodeMaru-Dreamine/Dreamine.Gem.Abstractions</RepositoryUrl>
@@ -26,6 +27,7 @@
     <None Include="icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Secs.Abstractions\Dreamine.Secs.Abstractions.csproj" />
+    <ProjectReference Include="..\Secs.Abstractions\Dreamine.Secs.Abstractions.csproj" Condition="'$(UseLocalDreamineSources)' != 'false' And Exists('..\Secs.Abstractions\Dreamine.Secs.Abstractions.csproj')" />
+    <PackageReference Include="Dreamine.Secs.Abstractions" Condition="'$(UseLocalDreamineSources)' == 'false' Or !Exists('..\Secs.Abstractions\Dreamine.Secs.Abstractions.csproj')" />
   </ItemGroup>
 </Project>

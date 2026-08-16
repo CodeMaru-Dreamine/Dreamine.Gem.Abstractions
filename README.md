@@ -1,8 +1,19 @@
 # Dreamine.Gem.Abstractions
 
+[![CI](https://github.com/CodeMaru-Dreamine/Dreamine.Gem.Abstractions/actions/workflows/ci.yml/badge.svg)](https://github.com/CodeMaru-Dreamine/Dreamine.Gem.Abstractions/actions/workflows/ci.yml)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=CodeMaru-Dreamine_Dreamine.Gem.Abstractions&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=CodeMaru-Dreamine_Dreamine.Gem.Abstractions) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=CodeMaru-Dreamine_Dreamine.Gem.Abstractions&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=CodeMaru-Dreamine_Dreamine.Gem.Abstractions) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=CodeMaru-Dreamine_Dreamine.Gem.Abstractions&metric=coverage)](https://sonarcloud.io/summary/new_code?id=CodeMaru-Dreamine_Dreamine.Gem.Abstractions)
+
 Provider-neutral GEM contracts and immutable domain models for Dreamine.
 
-[➡️ 한국어 문서 보기](README_KO.md)
+[➡️ 한국어 문서 보기](https://github.com/CodeMaru-Dreamine/Dreamine.Gem.Abstractions/blob/main/README_KO.md)
+
+## Install
+
+```powershell
+dotnet add package Dreamine.Gem.Abstractions
+```
+
+Choose this package for provider-neutral GEM contracts and immutable models. Applications that need the typed runtime and the implemented E30-derived dialogue subset should start with [`Dreamine.Gem`](https://www.nuget.org/packages/Dreamine.Gem).
 
 The package defines the SECS message-transport boundary, state and service
 contracts, and immutable values used by `Dreamine.Gem`. It depends on
@@ -37,13 +48,13 @@ The target sources for the implementation package are E30-0611 and E5-0813.
 They are not represented as current-revision conformance, certification, or
 interoperability evidence.
 
-See [the public API review](docs/API_REVIEW.md) and the generated
-[public API inventory](docs/PUBLIC_API.md).
+See [the public API review](https://github.com/CodeMaru-Dreamine/Dreamine.Gem.Abstractions/blob/main/docs/API_REVIEW.md) and the generated
+[public API inventory](https://github.com/CodeMaru-Dreamine/Dreamine.Gem.Abstractions/blob/main/docs/PUBLIC_API.md).
 
 ## Versioning note
 
-`1.0.0` is the initial public package version. Consume it together with the
-matching `Dreamine.Gem` `1.0.0` package, and clear older local-feed artifacts
+`1.0.1` is the current stabilization release. Consume it together with the
+matching `Dreamine.Gem` `1.0.1` package, and clear older local-feed artifacts
 from the package cache before validating the published pair.
 
 ## License
